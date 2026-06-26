@@ -44,11 +44,11 @@ def extract_video_id(value: str) -> str:
         return value
 
     parsed = urlparse(value)
-    host = (parsed.hostname or "").lower().lstrip("www.")
+    host = (parsed.hostname or "").lower().removeprefix("www.")
 
     if host == "youtu.be":
         candidate = parsed.path.lstrip("/").split("/")[0]
-    elif host.endswith("youtube.com"):
+    elif host == "youtube.com" or host.endswith(".youtube.com"):
         if parsed.path == "/watch":
             candidate = parse_qs(parsed.query).get("v", [""])[0]
         else:
